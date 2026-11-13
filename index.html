@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="id" class="dark" data-theme="dark" style="color-scheme: dark;">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CDNFREE — Inspeksi Tautan & Penjelajahan Lebih Aman</title>
+    <meta name="description" content="Periksa tujuan tautan, rantai pengalihan, host CDN, dan aset halaman sebelum Anda membukanya." />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="canonical" href="https://cdnfree.vercel.app/" />
+    <meta property="og:site_name" content="CDNFREE" />
+    <meta property="og:locale" content="id_ID" />
+    <meta property="og:url" content="https://cdnfree.vercel.app/" />
+    <meta property="og:title" content="CDNFREE — Inspeksi Tautan & Penjelajahan Lebih Aman" />
+    <meta property="og:description" content="Periksa tujuan tautan, rantai pengalihan, host CDN, dan aset halaman sebelum Anda membukanya." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#111113" />
+    <script>
+      (function () {
+        try {
+          var raw = localStorage.getItem('cdnfree:settings:v1');
+          var parsed = raw ? JSON.parse(raw) : null;
+          var isDark = !(parsed && parsed.theme === 'light');
+          var root = document.documentElement;
+          root.classList.toggle('dark', Boolean(isDark));
+          root.dataset.theme = isDark ? 'dark' : 'light';
+          root.style.colorScheme = isDark ? 'dark' : 'light';
+          var meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute('content', isDark ? '#111113' : '#ffffff');
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
