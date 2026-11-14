@@ -1,0 +1,55 @@
+! Title: CDNFREE Baseline Ad & Tracker Network Rules
+! Attribution: Derived from EasyList & EasyPrivacy domain patterns (https://easylist.to/)
+! License: CC BY-SA 3.0 / GPLv3 (https://easylist.to/pages/about.html)
+! Syntax scope: Network domain/path subset only (||domain^, @@||domain^, /path/)
+! Last modified: 2026-11-13
+
+! Known advertising & tracking endpoints
+||doubleclick.net^
+||googlesyndication.com^
+||googleadservices.com^
+||google-analytics.com^
+||googletagmanager.com^
+||adsystem.com^
+||amazon-adsystem.com^
+||adnxs.com^
+||criteo.com^
+||criteo.net^
+||taboola.com^
+||outbrain.com^
+||scorecardresearch.com^
+||quantserve.com^
+||pubmatic.com^
+||rubiconproject.com^
+||openx.net^
+||casalemedia.com^
+||advertising.com^
+||popads.net^
+||popcash.net^
+||propellerads.com^
+||exoclick.com^
+||juicyads.com^
+||trafficjunky.net^
+||hotjar.com^
+||mixpanel.com^
+||segment.io^
+||segment.com^
+||amplitude.com^
+||facebook.net^$third-party
+||connect.facebook.net^$third-party
+||ads.yahoo.com^
+||adservice.google.com^
+||pagead2.googlesyndication.com^
+||analytics.tiktok.com^
+||ads-twitter.com^
+
+! Common static ad path patterns
+/pagead/$third-party
+/ads/banner
+/adserver/
+
+! Explicit allowlist exceptions for legitimate public script/font CDNs
+@@||cdn.jsdelivr.net^
+@@||cdnjs.cloudflare.com^
+@@||fonts.googleapis.com^
+@@||fonts.gstatic.com^
