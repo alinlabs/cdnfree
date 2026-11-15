@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CDNFREE Engine Frame</title>
+  <style>
+    html, body, #frame {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #ffffff;
+      overflow: hidden;
+    }
+  </style>
+  <script src="/p/scram/scramjet.js"></script>
+  <script src="/p/controller/controller.api.js"></script>
+  <script src="/p/utils/scramjet-utils.js"></script>
+</head>
+<body>
+  <iframe id="frame" allow="clipboard-write; fullscreen; autoplay; encrypted-media"></iframe>
+  <script type="module">
+    import { LibcurlClient } from '/p/libcurl/index.mjs';
+
+    const parentOrigin = location.origin;
+    const postToParent = (payload) => {
+      try {
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage(payload, parentOrigin);
+        }
+      } catch {}
+    };
+
+    const rawHash = location.hash ? location.hash.slice(1) : '';
+    let target = '';
+    try {
+      target = decodeURIComponent(rawHash).trim();
+    } catch {
+      target = rawHash.trim();
+    }
+
+    if (!target || !/^https?:\/\//i.test(target)) {
+      postToParent({
+        type: 'cdnfree:engine-error',
+        reason: 'invalid-target',
+        message: 'Alamat tujuan untuk Mode Engine tidak valid.',
+      });
+    } else {
+      const waitForActiveSw = async () => {
+        if (!('serviceWorker' in navigator)) {
+          throw new Error('service-worker-unsupported');
+        }
+        const reg = await navigator.serviceWorker.getRegistration('/p/');
+        if (!reg) {
+          throw new Error('service-worker-missing');
+        }
+        if (reg.active) return reg.active;
+        const worker = reg.installing || reg.waiting;
+        if (!worker) {
+          throw new Error('service-worker-inactive');
+        }
+        await new Promise((resolve, reject) => {
+          const onStateChange = () => {
+            if (worker.state === 'activated' || reg.active) {
+              clearTimeout(timer);
+              worker.removeEventListener('statechange', onStateChange);
+              resolve();
+            } else if (worker.state === 'redundant') {
+              clearTimeout(timer);
+              worker.removeEventListener('statechange', onStateChange);
+              reject(new Error('service-worker-redundant'));
+            }
+          };
+          const timer = setTimeout(() => {
+            worker.removeEventListener('statechange', onStateChange);
+            reject(new Error('service-worker-timeout'));
+          }, 6000);
+          worker.addEventListener('statechange', onStateChange);
+        });
+        if (!reg.active) throw new Error('service-worker-inactive');
+        return reg.active;
+      };
+
+      try {
+        const activeSw = await waitForActiveSw();
+        const { Controller, ManagedPlugin } = globalThis.$scramjetController;
+        const { HttpCachePlugin, UrlWatcherPlugin, CatchEscapedLinksPlugin } =
+          globalThis.$scramjetUtils;
+
+        const wispUrl = `${location.origin.replace(/^http/, 'ws')}/wisp/`;
+        const controller = new Controller({
+          serviceworker: activeSw,
+          transport: new LibcurlClient({ wisp: wispUrl }),
+          config: {
+            prefix: '/p/sj/',
+            scramjetPath: '/p/scram/scramjet.js',
+            wasmPath: '/p/scram/scramjet.wasm',
+            injectPath: '/p/controller/controller.inject.js',
+          },
+          scramjetConfig: {
+            globals: {
+              wrapfn: '__cf_w',
+              wrappropertybase: '__cf_pb',
+              wrappropertyfn: '__cf_pf',
+              cleanrestfn: '__cf_c',
+              importfn: '__cf_i',
+              rewritefn: '__cf_r',
+              metafn: '__cf_m',
+              wrappostmessagefn: '__cf_pm',
+              pushsourcemapfn: '__cf_sm',
+              trysetfn: '__cf_ts',
+              templocid: '__cf_tl',
+              tempunusedid: '__cf_tu',
+            },
+          },
+        });
+
+        await controller.wait();
+
+        class FingerprintMaskPlugin extends ManagedPlugin {
+          constructor() {
+            super('cdnfree-fingerprint-mask', []);
+          }
+          install(frame) {
+            super.install(frame);
+            this.tap(frame.hooks.init.post, (ctx) => {
+              try {
+                const win = ctx && ctx.window;
+                if (!win) return;
+                if ('$scramjet' in win) {
+                  Object.defineProperty(win, '__cf_rt', {
+                    value: win.$scramjet,
+                    configurable: true,
+                    enumerable: false,
+                    writable: true,
+                  });
+                  delete win.$scramjet;
+                }
+                if ('$scramjetController' in win) {
+                  Object.defineProperty(win, '__cf_ctl', {
+                    value: win.$scramjetController,
+                    configurable: true,
+                    enumerable: false,
+                    writable: true,
+                  });
+                  delete win.$scramjetController;
+                }
+              } catch {}
+            });
+          }
+        }
+
+        const observedAssetUrls = new Set();
+        class AssetObserverPlugin extends ManagedPlugin {
+          constructor() {
+            super('cdnfree-asset-observer', []);
+          }
+          install(frame) {
+            super.install(frame);
+            this.tap(frame.hooks.fetch.intercept, (ctx) => {
+              try {
+                const dest = ctx?.parsed?.destination;
+                const href = ctx?.parsed?.url?.href;
+                if (!href || !/^https?:\/\//i.test(href)) return;
+                if (
+                  dest === 'image' ||
+                  dest === 'video' ||
+                  dest === 'audio' ||
+                  dest === 'font'
+                ) {
+                  if (!observedAssetUrls.has(href) && observedAssetUrls.size < 800) {
+                    observedAssetUrls.add(href);
+                    postToParent({
+                      type: 'cdnfree:asset',
+                      url: href,
+                      destination: dest,
+                    });
+                  }
+                }
+              } catch {}
+            });
+          }
+        }
+
+        const frameEl = document.getElementById('frame');
+        const frame = controller.createFrame(frameEl, {
+          plugins: [
+            new HttpCachePlugin(),
+            new UrlWatcherPlugin((url) => {
+              postToParent({ type: 'cdnfree:url', url });
+            }),
+            new CatchEscapedLinksPlugin((url) => {
+              setTimeout(() => {
+                frame.go(url.href);
+              }, 0);
+              return new URL(`/p/#${encodeURIComponent(url.href)}`, location.origin);
+            }),
+            new FingerprintMaskPlugin(),
+            new AssetObserverPlugin(),
+          ],
+        });
+
+        let docErrorCount = 0;
+        frame.hooks.error.request.tap((ctx) => {
+          try {
+            if (ctx?.rawrequest?.destination === 'document') {
+              docErrorCount += 1;
+              if (docErrorCount >= 1) {
+                postToParent({
+                  type: 'cdnfree:engine-error',
+                  reason: 'document-request-failed',
+                  message: String(ctx?.error?.message || 'Gagal memuat dokumen melalui Engine.'),
+                });
+              }
+            }
+          } catch {}
+        });
+
+        frameEl.addEventListener('load', () => {
+          postToParent({ type: 'cdnfree:ready', url: target });
+        });
+
+        window.addEventListener('message', (event) => {
+          if (event.origin !== parentOrigin) return;
+          const data = event.data;
+          if (!data || typeof data !== 'object') return;
+          if (data.type === 'cdnfree:engine-cmd') {
+            if (data.action === 'reload') frame.reload();
+            else if (data.action === 'back') frame.back();
+            else if (data.action === 'forward') frame.forward();
+          }
+        });
+
+        frame.go(target);
+      } catch (err) {
+        postToParent({
+          type: 'cdnfree:engine-error',
+          reason: err instanceof Error ? err.message : 'engine-boot-failed',
+          message:
+            err instanceof Error
+              ? err.message
+              : 'Gagal menginisialisasi Scramjet Engine.',
+        });
+      }
+    }
+  </script>
+</body>
+</html>
