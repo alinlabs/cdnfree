@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="CDNFREE">
+  <rect width="64" height="64" rx="14" fill="#111113" />
+  <rect x="6" y="16" width="52" height="32" rx="8" fill="#ffa31a" />
+  <text
+    x="32"
+    y="38.5"
+    text-anchor="middle"
+    font-family="Inter, system-ui, -apple-system, sans-serif"
+    font-size="19"
+    font-weight="800"
+    letter-spacing="-0.5"
+    fill="#141416"
+  >CDN</text>
+</svg>
