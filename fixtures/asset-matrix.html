@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <base href="https://site.ex/sub/page.html">
+  <title>Asset Matrix Regression Fixture</title>
+  <link rel="icon" href="../x.svg?v=2">
+  <link rel="stylesheet" href="/css/app.css">
+  <meta property="og:video" content="https://media.site.ex/promo.mp4">
+  <style>
+    @font-face {
+      font-family: 'MatrixSans';
+      src: url('/fonts/matrix.woff2') format('woff2');
+    }
+  </style>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "VideoObject",
+      "name": "Demo",
+      "contentUrl": "https://cdn.ex/y.mp4?v=2",
+      "thumbnailUrl": "https://site.ex/sub/poster.jpg"
+    }
+  </script>
+</head>
+<body>
+  <!-- Same filename in different directories must NOT collide -->
+  <img src="a/logo.png" alt="Logo A">
+  <img src="b/logo.png" alt="Logo B">
+
+  <!-- srcset with 3 candidates + lazy data-src + noscript fallback + inline CSS url() -->
+  <img srcset="pic-400.jpg 400w, pic-800.jpg 800w, pic-1200.jpg 1200w" alt="Responsive">
+  <img data-src="lazy-hero.avif" alt="Lazy">
+  <noscript><img src="noscript-fallback.png" alt="NoScript"></noscript>
+  <div style="background:url(a.webp)"></div>
+
+  <!-- Vector assets (svg relative ../x.svg, object, svg use with hash, direct link) -->
+  <object type="image/svg+xml" data="/vectors/diagram.svg"></object>
+  <svg viewBox="0 0 24 24"><use href="/sprites/icons.svg#arrow" /></svg>
+  <a href="/brand/mark.svg">Unduh Vektor</a>
+
+  <!-- Video assets (poster, protocol-relative source //cdn.ex/y.mp4?v=2, webm, hls, download link) -->
+  <video poster="poster.jpg" preload="none">
+    <source src="//cdn.ex/y.mp4?v=2" type="video/mp4">
+    <source src="clip.webm" type="video/webm">
+  </video>
+  <video data-src="stream/master.m3u8"></video>
+  <a href="downloads/trailer.mp4">Trailer MP4</a>
+
+  <!-- Audio assets -->
+  <audio controls>
+    <source src="audio/theme.mp3" type="audio/mpeg">
+  </audio>
+  <audio data-src="audio/voice.ogg"></audio>
+
+  <!-- Scheme & unresolvable traps -->
+  <img src="data:image/svg+xml;utf8,%3Csvg%3E%3C/svg%3E" alt="Inline Data">
+  <a href="javascript:void(0)" download>Trap JS</a>
+  <img src="#anchor" alt="Anchor Trap">
+  <img src="" alt="Empty Trap">
+</body>
+</html>
