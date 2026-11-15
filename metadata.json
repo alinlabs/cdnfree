@@ -1,0 +1,8 @@
+{
+  "name": "CDNFREE",
+  "description": "Aplikasi inspeksi tautan web, analisis redirect, dan inventaris aset untuk penjelajahan yang lebih aman.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

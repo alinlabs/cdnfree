@@ -1,0 +1,1062 @@
+
+# CDNFREE — FULL REPOSITORY DEEP INSPECTION, INTERNAL AUDIT, BUG ELIMINATION & SYSTEM OPTIMIZATION
+
+## 1. YOUR ROLE & PRIMARY OBJECTIVE
+
+You are acting as a Principal Software Architect, Senior Full-Stack Engineer, TypeScript Specialist, React Performance Engineer, Backend Infrastructure Engineer, Application Security Auditor, and Software Quality Assurance Specialist.
+
+Your assignment is to perform an EXTREMELY THOROUGH, SYSTEMATIC, AND COMPREHENSIVE INTERNAL TECHNICAL AUDIT of the entire CDNFREE codebase.
+
+This is not a superficial code review.
+
+This is not merely a formatting exercise.
+
+This is not simply an exercise in identifying potential errors.
+
+You are required to deeply inspect, understand, trace, validate, correct, refactor, and optimize the actual implementation across the entire repository.
+
+Your ultimate objective is to bring CDNFREE to the highest technically achievable level of:
+
+- Code correctness.
+- Architectural consistency.
+- State management reliability.
+- Runtime stability.
+- Performance efficiency.
+- Resource management.
+- Security and resilience.
+- Maintainability.
+- Scalability within the existing architecture.
+- Functional consistency across all application modules.
+
+**USE YOUR MAXIMUM AVAILABLE REASONING, ANALYTICAL CAPABILITY, CODE UNDERSTANDING, AND SOFTWARE ENGINEERING EXPERTISE.**
+
+Do not rush.
+
+Do not make assumptions without examining the actual implementation.
+
+Do not settle for identifying problems when those problems can be safely fixed.
+
+You must work directly with the actual repository and source code.
+
+Your responsibility is to improve the implementation, not merely produce an audit report.
+
+---
+
+## 2. PROJECT CONTEXT — CDNFREE
+
+First, read and understand the project's README.md in its entirety.
+
+README.md is the primary architectural and functional reference for understanding CDNFREE.
+
+CDNFREE is a Full-Stack TypeScript application consisting of:
+
+- React 19 frontend SPA.
+- Express backend.
+- Vite development and production build infrastructure.
+- Scramjet Engine 2.x.
+- Wisp WebSocket transport.
+- Libcurl transport.
+- Dual-mode isolated web browsing.
+- Lightweight reverse proxy.
+- Smart URL Parser.
+- Single and Bulk Link Inspection.
+- HTTP Redirect Chain Inspector.
+- Deep Asset Scanner.
+- CDN Host Detection.
+- Network Filter Engine.
+- Asset Manager.
+- Image, SVG, Video, Audio, and PDF viewers.
+- HTTP 206 Range Streaming.
+- Local Media Bookmarks.
+- Local Search History.
+- Browser-based Settings and Persistence.
+- SSRF Protection and DNS Rebinding Prevention.
+- URL validation and IP pinning.
+- SVG sanitization.
+- Session management and request limiting.
+
+The application has interconnected frontend, backend, proxy, transport, browser storage, and security mechanisms.
+
+Therefore, every modification must account for its potential impact on the entire application.
+
+IMPORTANT:
+
+README.md describes the intended architecture and documented behavior.
+
+However, the actual source code is the final authority for determining what is currently implemented.
+
+If documentation and implementation differ, investigate the discrepancy before making decisions.
+
+Never assume that a feature is implemented correctly merely because it is documented.
+
+---
+
+## 3. MANDATORY FIRST PHASE — COMPLETE REPOSITORY DISCOVERY
+
+Before modifying anything, perform a comprehensive discovery of the actual repository.
+
+You must:
+
+1. Inspect the complete repository structure.
+2. Identify every directory and its responsibilities.
+3. Identify every source file and its actual purpose.
+4. Inspect the application entry points.
+5. Inspect configuration files and build infrastructure.
+6. Inspect package.json and all available scripts.
+7. Inspect TypeScript configurations.
+8. Inspect frontend and backend module relationships.
+9. Identify dependencies between components, hooks, services, utilities, routes, and APIs.
+10. Identify shared state, persisted state, caches, event listeners, and background processes.
+11. Identify duplicated implementations and overlapping responsibilities.
+12. Identify deprecated, abandoned, redundant, or potentially unreachable code.
+
+Do not rely exclusively on README.md's directory tree.
+
+Discover the real repository structure independently.
+
+Inspect every relevant source file, including files that are not explicitly mentioned in the documentation.
+
+Do not arbitrarily exclude directories or files because they appear secondary.
+
+For third-party packages, generated files, build outputs, lockfiles, and externally maintained runtime assets, distinguish between application-owned source code and managed dependencies.
+
+Do not modify third-party internals unnecessarily.
+
+Create an internal dependency map before performing substantial refactoring.
+
+You must understand how modules communicate with one another before changing their implementations.
+
+---
+
+## 4. STATE MANAGEMENT AUDIT — REMOVE OBSOLETE AND UNUSED STATE
+
+Perform an intensive audit of all state management mechanisms throughout the application.
+
+Inspect:
+
+- React useState.
+- useReducer.
+- useEffect.
+- useMemo.
+- useCallback.
+- useRef.
+- Context providers.
+- Custom hooks.
+- Shared state.
+- Derived state.
+- Local component state.
+- Session state.
+- Persistent browser state.
+- Event-driven state synchronization.
+- Asynchronous request state.
+- Cache state.
+- Iframe communication state.
+- Proxy session state.
+- Background task state.
+
+Identify and safely eliminate:
+
+1. State variables that are genuinely unused.
+2. State setters that are never required.
+3. Obsolete state introduced by previous implementations.
+4. Duplicate state representing the same information.
+5. State that can safely be derived from existing data.
+6. Redundant synchronization mechanisms.
+7. Unnecessary effects.
+8. Unnecessary state updates.
+9. Stale closures.
+10. State that is no longer reachable.
+11. Unnecessary refs and duplicated references.
+12. Unused event subscriptions.
+13. Redundant cache entries.
+14. State that creates unnecessary re-rendering.
+
+IMPORTANT:
+
+Do not remove state simply because its value does not appear to be directly rendered in the same file.
+
+Trace its complete usage throughout the application.
+
+A state variable may be used indirectly by callbacks, effects, child components, custom hooks, URL synchronization, asynchronous operations, or external event listeners.
+
+Verify its complete dependency chain before deciding to remove it.
+
+Preserve all state that is required for:
+
+- Bulk inspection progress.
+- Inspection session continuity.
+- URL and query parameter synchronization.
+- Browser history navigation.
+- Media viewer navigation.
+- Asset collection.
+- Engine fallback tracking.
+- Iframe communication.
+- Proxy session continuity.
+- Bookmark synchronization.
+- Search history synchronization.
+- Settings persistence.
+- Theme synchronization.
+- Background requests.
+- Loading and error states.
+
+Do not replace persistent state with temporary state without verifying the consequences.
+
+The objective is not to minimize the number of state variables at any cost.
+
+The objective is to achieve the cleanest, most reliable, predictable, and efficient state architecture.
+
+---
+
+## 5. COMPREHENSIVE ERROR DETECTION & CORRECTION
+
+Inspect the entire codebase for actual errors and potential failure conditions.
+
+### A. TypeScript
+
+Inspect:
+
+- Type inconsistencies.
+- Incorrect type assertions.
+- Unsafe any usage.
+- Incorrect generics.
+- Missing return types where valuable.
+- Incorrect optional properties.
+- Null and undefined handling.
+- Incorrect interface definitions.
+- Invalid type narrowing.
+- Unnecessary type duplication.
+- Type mismatches between frontend and backend.
+- API request and response contract inconsistencies.
+
+Ensure that TypeScript accurately represents the real data structures and runtime behavior.
+
+### B. React
+
+Inspect:
+
+- Invalid hook usage.
+- Incorrect dependency arrays.
+- Missing effect dependencies.
+- Infinite rendering loops.
+- Unnecessary re-renders.
+- Stale closures.
+- Incorrect component lifecycle handling.
+- Incorrect key usage.
+- Missing cleanup functions.
+- State update after component unmount.
+- Incorrect asynchronous effect handling.
+- Event listener leaks.
+- Incorrect memoization.
+- Unnecessary component complexity.
+
+### C. Backend and Express
+
+Inspect:
+
+- Incorrect middleware ordering.
+- Incorrect route handling.
+- Unhandled promise rejections.
+- Missing exception handling.
+- Incorrect HTTP status codes.
+- Invalid request validation.
+- Incorrect response handling.
+- Request lifecycle problems.
+- Stream handling problems.
+- Memory leaks.
+- Resource exhaustion.
+- Incorrect timeout behavior.
+- Incorrect concurrency control.
+
+### D. Runtime and Integration
+
+Inspect:
+
+- Browser runtime errors.
+- Server runtime errors.
+- Failed API communication.
+- Incorrect URL construction.
+- Invalid query parameters.
+- Broken navigation.
+- Inconsistent API contracts.
+- Incorrect iframe messaging.
+- Service Worker registration issues.
+- WebSocket connection problems.
+- Incorrect cache invalidation.
+- Race conditions.
+- Unexpected asynchronous behavior.
+- Failure recovery mechanisms.
+
+For every confirmed issue, investigate its root cause and implement an appropriate correction.
+
+Do not merely suppress errors.
+
+Do not use broad try/catch blocks to hide underlying problems.
+
+Do not silence TypeScript errors using arbitrary type assertions.
+
+Do not introduce fallback behavior that conceals broken functionality.
+
+---
+
+## 6. DEEP BUG HUNTING & ROOT CAUSE ANALYSIS
+
+Perform an intensive bug investigation across all application layers.
+
+Look beyond obvious syntax errors.
+
+Investigate subtle behavioral defects, including:
+
+- Race conditions.
+- Concurrent request conflicts.
+- Duplicate API requests.
+- Incorrect cancellation behavior.
+- Stale cached responses.
+- Incorrect state transitions.
+- Incorrect loading indicators.
+- Missing error recovery.
+- Broken navigation sequences.
+- Incorrect URL encoding and decoding.
+- Duplicate asset entries.
+- Missing asset entries.
+- Incorrect MIME classification.
+- Incorrect redirect detection.
+- Incorrect redirect loop handling.
+- Incorrect filter matching.
+- Incorrect session expiration.
+- Inconsistent bookmark persistence.
+- Inconsistent history retention.
+- Media playback interruptions.
+- Incorrect HTTP Range calculations.
+- Incorrect stream termination.
+- Broken download handling.
+- Iframe navigation failures.
+- Incorrect Engine-to-Lightweight fallback.
+- Incomplete cleanup of browser resources.
+- Incorrect handling of malformed remote content.
+
+For every potential bug:
+
+1. Identify the affected implementation.
+2. Trace its upstream and downstream dependencies.
+3. Determine the actual root cause.
+4. Evaluate the consequences.
+5. Implement the safest correction.
+6. Validate the corrected behavior.
+7. Check whether the correction introduces regressions elsewhere.
+
+Never fix an isolated symptom while leaving its underlying cause unresolved.
+
+---
+
+## 7. ARCHITECTURE & FLOW OPTIMIZATION
+
+Audit the overall application architecture and improve its internal mechanisms.
+
+Evaluate whether each module has a clear responsibility and whether communication between modules is efficient.
+
+### Frontend Architecture
+
+Optimize:
+
+- Component composition.
+- Custom hook responsibilities.
+- Shared logic.
+- State ownership.
+- Data flow.
+- Route management.
+- Lazy loading.
+- Rendering efficiency.
+- Component boundaries.
+- Event propagation.
+- URL synchronization.
+- Asynchronous data handling.
+
+Avoid unnecessary component complexity and excessive abstraction.
+
+Do not create additional abstraction layers unless they provide a measurable architectural benefit.
+
+### Backend Architecture
+
+Optimize:
+
+- Route responsibilities.
+- Service boundaries.
+- Request processing pipelines.
+- Middleware composition.
+- Shared utilities.
+- Error propagation.
+- Resource lifecycle.
+- Concurrency handling.
+- Session management.
+- Memory management.
+
+Ensure that backend services have clear responsibilities and consistent communication contracts.
+
+### Application Flow
+
+Trace complete user workflows from beginning to end.
+
+For example:
+
+Smart URL Input
+→ URL Parsing
+→ Search Configuration
+→ Single/Bulk Inspection
+→ Backend Inspection
+→ Redirect Analysis
+→ HTML Extraction
+→ Deep Asset Scanning
+→ Result Storage
+→ Workspace Navigation
+→ Asset Aggregation
+→ Asset Filtering
+→ Media Preview
+→ Download / Bookmark / History.
+
+Also inspect:
+
+- Engine browsing flow.
+- Lightweight proxy flow.
+- Engine fallback flow.
+- Direct Asset View flow.
+- Runtime asset collection flow.
+- Media Full View flow.
+- Bookmark import/export flow.
+- Search history persistence flow.
+- Settings and protection flow.
+
+Verify that each stage communicates correctly with the next stage.
+
+Identify unnecessary processing, duplicated work, excessive transformations, and avoidable network requests.
+
+Optimize the complete flow rather than optimizing individual functions in isolation.
+
+---
+
+## 8. PERFORMANCE & RESOURCE MANAGEMENT AUDIT
+
+Perform a comprehensive performance audit.
+
+### Frontend Performance
+
+Investigate:
+
+- Unnecessary component rendering.
+- Excessive state updates.
+- Large component trees.
+- Unnecessary effects.
+- Expensive calculations.
+- Inefficient list rendering.
+- Unnecessary object and array recreation.
+- Excessive DOM operations.
+- Large asset previews.
+- Unnecessary media loading.
+- Memory retention.
+- Event listener accumulation.
+- Image loading inefficiencies.
+
+### Backend Performance
+
+Investigate:
+
+- Excessive network requests.
+- Unnecessary DNS lookups.
+- Redundant HTTP requests.
+- Inefficient parsing.
+- Excessive buffering.
+- Uncontrolled concurrency.
+- Memory-intensive operations.
+- Duplicate scanning.
+- Inefficient cache behavior.
+- Long-running requests.
+- Resource cleanup failures.
+
+### Resource Lifecycle
+
+Pay particular attention to:
+
+- AbortController.
+- Fetch requests.
+- Timers.
+- Intervals.
+- Event listeners.
+- WebSocket connections.
+- MessageChannel.
+- MutationObserver.
+- IntersectionObserver.
+- ResizeObserver.
+- Media streams.
+- Object URLs.
+- Blob references.
+- Audio and video elements.
+- Canvas rendering.
+- PDF rendering workers.
+- Iframe instances.
+- Service Workers.
+- Cache entries.
+- Temporary session data.
+
+Ensure that resources are correctly initialized, reused where appropriate, and released when no longer needed.
+
+Prevent memory leaks and unnecessary background activity.
+
+Do not introduce performance optimizations that reduce reliability or functionality.
+
+---
+
+## 9. SECURITY & NETWORKING AUDIT — CRITICAL PRIORITY
+
+CDNFREE processes arbitrary external URLs and remote web resources.
+
+Security must therefore receive special attention.
+
+Perform an intensive review of the entire security implementation.
+
+### SSRF & DNS Security
+
+Inspect:
+
+- URL scheme validation.
+- DNS A and AAAA resolution.
+- IPv4 and IPv6 validation.
+- Private IP rejection.
+- Loopback rejection.
+- Link-local rejection.
+- CGNAT rejection.
+- Cloud metadata protection.
+- DNS rebinding prevention.
+- IP pinning.
+- Redirect destination revalidation.
+- Socket connection validation.
+- Proxy upstream validation.
+
+Verify that every outbound request path follows the intended security policy.
+
+Do not assume that validating the original URL is sufficient when redirects or secondary asset requests are involved.
+
+### Proxy Security
+
+Inspect:
+
+- Header forwarding.
+- Cookie handling.
+- Session isolation.
+- Request method handling.
+- Response header sanitization.
+- HTML rewriting.
+- CSS rewriting.
+- JavaScript rewriting.
+- M3U8 rewriting.
+- SVG sanitization.
+- URL encoding.
+- Cross-origin handling.
+- Frame isolation.
+- Clickjacking protection.
+
+### API Security
+
+Inspect:
+
+- Request validation.
+- CSRF protection.
+- Rate limiting.
+- Request size limits.
+- Timeout limits.
+- Download restrictions.
+- MIME allowlists and denylists.
+- Sensitive information exposure.
+- Error response disclosure.
+- Session-bound resource validation.
+
+### Streaming and Downloads
+
+Inspect:
+
+- HTTP 206 behavior.
+- Content-Range correctness.
+- Accept-Ranges handling.
+- HEAD requests.
+- Partial stream cancellation.
+- Stream destruction.
+- Upstream disconnect handling.
+- Maximum byte limits.
+- SVG sanitization.
+- Download filename handling.
+- Content-Disposition.
+- MIME validation.
+
+Never weaken security controls merely to make a remote website load successfully.
+
+Never introduce unrestricted URL fetching, unrestricted IP access, or arbitrary file execution.
+
+Preserve the application's security boundaries.
+
+If an existing security mechanism is incomplete, strengthen it without unnecessarily breaking legitimate functionality.
+
+---
+
+## 10. FUNCTIONAL REGRESSION & FEATURE PRESERVATION
+
+All existing documented functionality must remain operational.
+
+Do not remove features simply because their implementations appear complex.
+
+Do not simplify the application by sacrificing existing capabilities.
+
+Pay special attention to:
+
+1. Smart URL Parser.
+2. Single Link Inspection.
+3. Bulk Link Inspection.
+4. Search Configuration.
+5. Redirect Chain Inspector.
+6. Client-side Redirect Detection.
+7. Deep Asset Scanner.
+8. CDN Detection.
+9. Filter Engine.
+10. Mode Engine.
+11. Lightweight Proxy.
+12. Automatic Engine Fallback.
+13. Direct Asset View.
+14. Runtime Asset Collection.
+15. Image Gallery.
+16. SVG Gallery.
+17. Video Gallery.
+18. Audio Gallery.
+19. PDF Gallery.
+20. Resource Table.
+21. Media Full View.
+22. HTTP Range Streaming.
+23. Asset Download.
+24. Bookmark Management.
+25. Bookmark Import/Export.
+26. Search History.
+27. History Retention.
+28. Theme Management.
+29. Protection Settings.
+30. Privacy Settings.
+31. Route Compatibility.
+32. Immersive Web Mode.
+33. Responsive UI.
+34. Error and Loading States.
+
+Verify compatibility between:
+
+- `/search/*`
+- `/hasil-pencarian/*`
+- Query parameters.
+- Browser back/forward navigation.
+- Page refresh.
+- Local storage.
+- Session storage.
+- Inspection sessions.
+- Media viewer overlays.
+
+Preserve backward compatibility wherever it is part of the existing application contract.
+
+Do not change user-facing behavior unnecessarily.
+
+---
+
+## 11. CODE QUALITY & CLEANUP
+
+Inspect all application-owned source code for:
+
+- Dead code.
+- Unused imports.
+- Unused variables.
+- Unused functions.
+- Unused types.
+- Duplicate functions.
+- Duplicate constants.
+- Redundant conditions.
+- Unnecessary branches.
+- Unreachable code.
+- Unnecessary dependencies.
+- Obsolete comments.
+- Misleading documentation.
+- Inconsistent naming.
+- Overly complicated implementations.
+- Excessive coupling.
+- Circular dependencies.
+- Unnecessary abstraction.
+
+Remove genuinely redundant code.
+
+Consolidate duplicated logic where appropriate.
+
+Improve naming and code readability where it materially improves maintainability.
+
+Preserve existing project conventions unless there is a demonstrable reason to improve them.
+
+Avoid unnecessary code movement.
+
+Avoid creating excessive helper files.
+
+Do not add dependencies merely to replace simple existing functionality.
+
+Do not modify lockfiles or dependency versions without a clear technical justification.
+
+Respect existing project constraints, including the documented source-file length limit of 600 lines where applicable.
+
+If a file exceeds the limit, evaluate whether a logical and safe separation is appropriate.
+
+---
+
+## 12. TESTING & VERIFICATION — NO UNVERIFIED FIXES
+
+After making corrections, perform comprehensive verification using the actual commands available in package.json.
+
+At minimum, investigate and execute the applicable checks:
+
+- TypeScript type checking.
+- Linting.
+- Unit tests.
+- Integration tests.
+- Production build.
+- File length validation.
+- Filter source validation.
+
+Do not assume that every command exists exactly as documented.
+
+Inspect the actual scripts before executing them.
+
+If an existing test fails:
+
+1. Identify whether the failure existed before your changes or was introduced by them, where baseline comparison is possible.
+2. Investigate the root cause.
+3. Correct the implementation or test if appropriate.
+4. Rerun the relevant checks.
+
+Add or improve tests when important defects or uncovered critical behaviors are discovered.
+
+Prioritize tests for:
+
+- URL parsing.
+- Redirect inspection.
+- IP policy.
+- SSRF protection.
+- Asset extraction.
+- Asset classification.
+- Filter matching.
+- Proxy rewriting.
+- Stream handling.
+- API validation.
+- Bulk inspection.
+- Storage migration.
+- State synchronization.
+
+Do not change tests merely to make incorrect implementation appear correct.
+
+Do not claim a test passed if it was not actually executed.
+
+If a verification step cannot be completed due to environmental limitations, clearly disclose it.
+
+---
+
+## 13. STRICT MODIFICATION RULES
+
+These rules are mandatory.
+
+### Rule 1 — Inspect Before Editing
+
+Never modify a source file without first understanding its purpose and dependencies.
+
+### Rule 2 — Trace Dependencies
+
+Before changing a shared utility, hook, service, type, or API contract, identify all affected consumers.
+
+### Rule 3 — No Blind Refactoring
+
+Do not perform broad automated replacements without validating the resulting implementation.
+
+### Rule 4 — No Speculative Deletion
+
+Do not delete files, state, functions, or dependencies based solely on naming or superficial usage searches.
+
+Verify actual reachability and dynamic usage.
+
+### Rule 5 — Preserve Existing Functionality
+
+Every change must be evaluated against the documented features and actual implementation.
+
+### Rule 6 — No Fake Fixes
+
+Do not suppress errors, disable checks, weaken TypeScript settings, or bypass security to obtain a passing build.
+
+### Rule 7 — No Unnecessary Rewrites
+
+Do not rewrite entire modules when a smaller, safer correction achieves the objective.
+
+### Rule 8 — No Unsupported Assumptions
+
+Discover actual file locations, implementations, package versions, scripts, and architectural relationships from the repository itself.
+
+Never invent file paths or assume that a documented file still exists.
+
+### Rule 9 — Protect Sensitive Information
+
+Never expose, overwrite, or unnecessarily inspect secret values from environment files.
+
+Preserve environment variable contracts.
+
+### Rule 10 — Verify Every Significant Change
+
+Use appropriate static analysis, tests, and build verification after modifications.
+
+### Rule 11 — Maintain Architectural Consistency
+
+A correction in one module must not create inconsistent behavior in another module.
+
+### Rule 12 — Make Actual Changes
+
+You are authorized to inspect, refactor, correct, and optimize the existing application source code.
+
+Do not stop after presenting recommendations.
+
+Implement safe, justified improvements directly.
+
+---
+
+## 14. REQUIRED EXECUTION STRATEGY
+
+Perform the audit in structured phases.
+
+### PHASE 1 — Repository Discovery
+
+Discover the entire repository, its structure, source files, dependencies, configurations, and available tests.
+
+### PHASE 2 — Architecture Reconstruction
+
+Reconstruct the actual application architecture and trace important dependencies and execution flows.
+
+### PHASE 3 — Baseline Verification
+
+Run applicable existing checks to understand the current codebase condition.
+
+Record existing failures and environmental limitations.
+
+### PHASE 4 — Deep Source Inspection
+
+Inspect the actual implementation module by module.
+
+Identify errors, bugs, unused state, dead code, duplicated logic, architectural problems, and security weaknesses.
+
+### PHASE 5 — Root Cause Analysis
+
+Determine the root cause and impact of each significant issue.
+
+Prioritize issues based on severity, security impact, functional impact, and architectural consequences.
+
+### PHASE 6 — Controlled Refactoring
+
+Perform justified corrections and optimizations.
+
+Work in logically connected groups of files.
+
+Avoid making unrelated changes simultaneously.
+
+### PHASE 7 — Cross-Module Validation
+
+Reinspect affected dependencies and verify that changes remain consistent throughout the application.
+
+### PHASE 8 — Regression Testing
+
+Run relevant unit tests, integration tests, type checks, linting, and builds.
+
+Fix regressions introduced by the modifications.
+
+### PHASE 9 — Final Repository Review
+
+Perform another inspection of modified files and their dependent modules.
+
+Search for remaining unused state, broken references, unnecessary code, inconsistent contracts, and unresolved defects.
+
+### PHASE 10 — Final Verification & Reporting
+
+Produce a clear summary of completed work, remaining limitations, and verification results.
+
+IMPORTANT:
+
+Do not treat the completion of one phase as permission to skip the next phase.
+
+Do not stop at repository discovery or the initial audit report.
+
+Continue through implementation and verification.
+
+---
+
+## 15. PRIORITY MATRIX
+
+Use the following priority order when deciding what to address first.
+
+**CRITICAL**
+- Security vulnerabilities.
+- SSRF bypasses.
+- DNS rebinding weaknesses.
+- Sensitive information exposure.
+- Data corruption.
+- Broken core application functionality.
+- Unhandled failures affecting system stability.
+
+**HIGH**
+- Runtime errors.
+- Major functional bugs.
+- State synchronization failures.
+- Race conditions.
+- Incorrect request handling.
+- Streaming and download failures.
+- Memory leaks.
+- Broken proxy or engine workflows.
+
+**MEDIUM**
+- Unnecessary state.
+- Duplicate logic.
+- Inefficient rendering.
+- Excessive requests.
+- Poor resource cleanup.
+- Architectural inconsistencies.
+- Unnecessary processing.
+
+**LOW**
+- Minor code quality issues.
+- Naming inconsistencies.
+- Redundant comments.
+- Cosmetic implementation improvements.
+
+Do not spend substantial effort polishing low-priority issues while critical problems remain unresolved.
+
+---
+
+## 16. DEFINITION OF DONE
+
+The task is not complete merely because the application compiles.
+
+The audit is considered complete only when:
+
+- The repository has been systematically inspected.
+- Major source modules have been reviewed.
+- Important module dependencies have been traced.
+- Confirmed errors have been corrected where possible.
+- Confirmed bugs have been corrected where possible.
+- Genuinely unused state has been removed.
+- Redundant implementations have been evaluated and cleaned up.
+- Important resource cleanup paths have been verified.
+- Core application flows have been checked.
+- Security-critical mechanisms have been reviewed.
+- Existing functionality has been preserved.
+- Relevant tests have been executed.
+- Production build has been verified where possible.
+- Modified modules have undergone regression inspection.
+- Remaining known issues have been explicitly documented.
+
+Never declare the system completely error-free merely because automated checks pass.
+
+Distinguish between:
+- Verified and corrected.
+- Verified and already correct.
+- Investigated but not fully verifiable.
+- Known limitation.
+- Unresolved issue.
+
+---
+
+## 17. FINAL REPORT REQUIREMENTS
+
+After completing the actual modifications, provide a structured technical report.
+
+### A. Audit Summary
+
+Explain the overall condition of the repository and the major areas inspected.
+
+### B. Problems Discovered
+
+List the significant problems found, their root causes, and their severity.
+
+### C. Corrections Implemented
+
+Describe the actual modifications made and why they were necessary.
+
+### D. State Cleanup
+
+Identify obsolete state, redundant effects, unnecessary synchronization, and unused code removed.
+
+### E. Performance Improvements
+
+Explain the actual performance and resource-management improvements.
+
+### F. Security Findings
+
+Explain security weaknesses discovered and the corrections implemented.
+
+### G. Files Modified
+
+List the actual files modified and the purpose of each modification.
+
+### H. Testing Results
+
+Provide the actual results of:
+- TypeScript.
+- Lint.
+- Unit tests.
+- Integration tests.
+- Production build.
+- Other relevant verification.
+
+Clearly identify passed, failed, skipped, and blocked checks.
+
+### I. Remaining Issues
+
+Identify anything that remains unresolved, unverified, or dependent on external infrastructure.
+
+### J. Final Assessment
+
+Provide an honest technical assessment of the application after the audit.
+
+Do not exaggerate the quality of the result.
+
+Do not claim improvements that were not actually implemented or verified.
+
+---
+
+# FINAL EXECUTION DIRECTIVE
+
+This assignment requires deep technical investigation, not superficial code cleanup.
+
+I expect you to behave like an experienced engineering team conducting a serious internal software audit of a production-oriented application.
+
+Read the actual source code.
+
+Trace the actual dependencies.
+
+Understand the actual execution flow.
+
+Identify the actual root causes.
+
+Make technically justified improvements.
+
+Verify the actual results.
+
+**USE YOUR MAXIMUM AVAILABLE ANALYTICAL CAPACITY AT EVERY STAGE.**
+
+Do not rush through the repository.
+
+Do not randomly modify files.
+
+Do not stop after finding the first few problems.
+
+Do not assume that passing a build means the application is correct.
+
+Do not prioritize the appearance of progress over actual engineering quality.
+
+If the repository is too large to inspect in one uninterrupted pass, divide the work into manageable, logically connected audit batches. Maintain a record of inspected modules, modified files, unresolved dependencies, and remaining work. Continue systematically until the entire application has received the intended inspection.
+
+The goal is to achieve the most reliable, clean, secure, maintainable, and optimized version of CDNFREE that can be reasonably achieved within its existing architecture.
+
+**START WITH COMPLETE REPOSITORY DISCOVERY, THEN EXECUTE THE FULL AUDIT, IMPLEMENTATION, AND VERIFICATION PROCESS.**
+
+DO NOT RETURN ONLY A PLAN.
+
+DO NOT RETURN ONLY RECOMMENDATIONS.
+
+**INSPECT THE CODE. FIX THE CODE. VERIFY THE CODE.**
